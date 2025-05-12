@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { watchEffect } from 'vue'
 import LanguageSwitcher from './components/LanguageSwitcher.vue'
 import PhotoUpload from './components/PhotoUpload.vue'
 import ExifEditor from './components/ExifEditor.vue'
 
 const { t } = useI18n()
+
+// 监听语言变化并更新网页标题
+watchEffect(() => {
+  document.title = t('title')
+})
 </script>
 
 <template>
