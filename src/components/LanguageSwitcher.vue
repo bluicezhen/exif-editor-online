@@ -42,7 +42,7 @@ const currentLanguage = computed({
 }
 
 .language-select :deep(.el-input__wrapper) {
-  background-color: transparent;
+  /* background-color: transparent; */
   box-shadow: none;
 }
 

@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 
-// 中文翻译
+// Chinese translations
 const zh = {
   title: 'EXIF 在线编辑器',
   upload: {
@@ -12,10 +12,25 @@ const zh = {
   lang: {
     zh: '中文',
     en: 'English'
+  },
+  photos: {
+    upload: '上传',
+    selectAll: '全选',
+    deselectAll: '取消全选',
+    delete: '删除',
+    count: '共 {count} 张图片',
+    noSelection: '请先选择要删除的图片',
+    confirmDelete: '确认删除{count}张已选中的图片吗？',
+    deleteConfirmTitle: '删除确认',
+    deleteSuccess: '删除成功'
+  },
+  common: {
+    confirm: '确认',
+    cancel: '取消'
   }
 }
 
-// 英文翻译
+// English translations
 const en = {
   title: 'EXIF Online Editor',
   upload: {
@@ -27,14 +42,29 @@ const en = {
   lang: {
     zh: '中文',
     en: 'English'
+  },
+  photos: {
+    upload: 'Upload',
+    selectAll: 'Select All',
+    deselectAll: 'Deselect All',
+    delete: 'Delete',
+    count: '{count} Photos',
+    noSelection: 'Please select photos to delete',
+    confirmDelete: 'Confirm to delete {count} selected photos?',
+    deleteConfirmTitle: 'Delete Confirmation',
+    deleteSuccess: 'Deleted successfully'
+  },
+  common: {
+    confirm: 'Confirm',
+    cancel: 'Cancel'
   }
 }
 
-// 创建i18n实例
+// Create i18n instance
 const i18n = createI18n({
-  legacy: false, // 使用组合式 API
-  locale: 'zh', // 默认语言
-  fallbackLocale: 'en', // 回退语言
+  legacy: false, // Use Composition API
+  locale: 'zh', // Default language
+  fallbackLocale: 'en', // Fallback language
   messages: {
     zh,
     en

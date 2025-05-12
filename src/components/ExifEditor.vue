@@ -5,21 +5,38 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="exif-editor-container h-full w-full p-4">
-    <div class="editor-placeholder flex items-center justify-center h-full">
-      <p class="text-gray-500">{{ t('editor.title') }}</p>
+  <div class="exif-editor-container">
+    <div class="editor-placeholder">
+      <p class="placeholder-text">{{ t('editor.title') }}</p>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* EXIF Editor container takes full height and width of parent */
 .exif-editor-container {
-  background-color: #f5f5f5;
-  border-left: 1px solid #e0e0e0;
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Placeholder for editor content */
 .editor-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px dashed #dcdfe6;
   border-radius: 4px;
+  background-color: white;
+}
+
+/* Placeholder text style */
+.placeholder-text {
+  color: #909399;
+  font-size: 1rem;
 }
 </style> 
