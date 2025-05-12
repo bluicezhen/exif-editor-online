@@ -9,7 +9,7 @@ const { t } = useI18n()
 
 <template>
   <div class="app-container">
-    <!-- 顶部 Banner -->
+    <!-- Top Banner -->
     <header class="app-header bg-gray-800 text-white">
       <div class="w-full px-4 h-16 flex items-center justify-between">
         <h1 class="text-xl font-medium">{{ t('title') }}</h1>
@@ -26,14 +26,14 @@ const { t } = useI18n()
       </div>
     </header>
 
-    <!-- 主要内容区域 -->
+    <!-- Main Content -->
     <main class="app-content w-full px-4 py-6 flex">
-      <!-- 左侧照片显示区域 -->
+      <!-- Left Photo Display Area -->
       <div class="photo-area w-3/4 pr-4">
         <PhotoUpload />
       </div>
 
-      <!-- 右侧 EXIF 编辑区域 -->
+      <!-- Right EXIF Editor Area -->
       <div class="exif-area w-1/4">
         <ExifEditor />
       </div>
