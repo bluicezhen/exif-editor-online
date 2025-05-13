@@ -267,7 +267,6 @@ html, body {
   width: 25%;
   height: 100%;
   position: relative;
-  border-left: 1px solid #e0e0e0;
   background-color: white;
   border-radius: 4px;
   overflow: hidden;

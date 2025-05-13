@@ -17,7 +17,6 @@ const { t } = useI18n()
 .exif-editor-container {
   height: 100%;
   width: 100%;
-  padding: 1rem;
   background-color: #f9f9f9;
   display: flex;
   flex-direction: column;
@@ -29,7 +28,6 @@ const { t } = useI18n()
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px dashed #dcdfe6;
   border-radius: 4px;
   background-color: white;
 }

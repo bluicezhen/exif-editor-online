@@ -65,7 +65,6 @@ function handleChange(file: any) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px dashed #dcdfe6;
   border-radius: 4px;
   transition: border-color 0.3s;
 }
