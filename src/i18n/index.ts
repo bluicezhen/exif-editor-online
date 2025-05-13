@@ -4,7 +4,10 @@ import { createI18n } from 'vue-i18n'
 const zh = {
   title: 'EXIF 在线编辑器',
   upload: {
-    placeholder: '点击或拖拽图片到此区域上传'
+    placeholder: '点击或拖拽图片到此区域上传',
+    onlyImages: '只允许上传图片文件！',
+    sizeExceeded: '图片大小不能超过 {size}MB',
+    imageLoadError: '图片加载失败，请重试'
   },
   editor: {
     title: 'EXIF 编辑区域 (开发中)'
@@ -34,7 +37,10 @@ const zh = {
 const en = {
   title: 'EXIF Online Editor',
   upload: {
-    placeholder: 'Click or drag image to this area to upload'
+    placeholder: 'Click or drag image to this area to upload',
+    onlyImages: 'Only image files are allowed!',
+    sizeExceeded: 'Image size cannot exceed {size}MB',
+    imageLoadError: 'Failed to load image, please try again'
   },
   editor: {
     title: 'EXIF Editor Area (Under Development)'

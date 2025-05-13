@@ -33,30 +33,56 @@ const isSelected = computed({
 
 <template>
   <div 
-    class="photo-item aspect-square bg-white rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow relative cursor-pointer"
+    class="photo-item"
     :class="{ 'photo-selected': selected }"
     @click="handleClick"
   >
-    <div class="checkbox-container absolute top-2 left-2 z-10" @click.stop>
+    <div class="checkbox-container" @click.stop>
       <el-checkbox v-model="isSelected" />
     </div>
-    <div class="w-full h-full flex items-center justify-center">
-      <img 
-        :src="url" 
-        :alt="name"
-        class="max-w-full max-h-full object-contain" 
-      />
-    </div>
-    <div class="photo-name absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1 truncate">
+    <img 
+      :src="url" 
+      :alt="name"
+      class="photo-image" 
+    />
+    <div class="photo-name">
       {{ name }}
     </div>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@use '../assets/styles/abstracts' as *;
+
 .photo-item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background-color: var(--bg-primary);
+  border-radius: $border-radius;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  cursor: pointer;
   transition: all 0.2s ease;
-  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+}
+
+.checkbox-container {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+}
+
+.photo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Changed from cover back to contain to show full image */
 }
 
 .photo-selected {
@@ -66,7 +92,16 @@ const isSelected = computed({
 }
 
 .photo-name {
+  position: absolute;
   bottom: 0;
-  margin: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  font-size: 0.75rem;
+  padding: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style> 
