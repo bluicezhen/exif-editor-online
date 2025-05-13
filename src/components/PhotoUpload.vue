@@ -105,5 +105,6 @@ function handleChange(file: any) {
   align-items: center;
   justify-content: center;
   background-color: transparent;
+  border: none;
 }
 </style> 
