@@ -28,13 +28,16 @@ const photos = ref<PhotoItem[]>([])
 const hasPhotos = computed(() => photos.value.length > 0)
 const selectedCount = computed(() => photos.value.filter(photo => photo.selected).length)
 const allSelected = computed(() => photos.value.length > 0 && selectedCount.value === photos.value.length)
-const uploadRef = ref<HTMLElement | null>(null)
+const uploadRef = ref<InstanceType<typeof PhotoUpload> | null>(null)
 
 // Handle image upload
-function handleImageUpload(file: { url: string, name: string, id: string }) {
-  photos.value.push({
-    ...file,
-    selected: false
+function handleImageUpload(files: Array<{ url: string, name: string, id: string }>) {
+  // Add each uploaded file to photos array
+  files.forEach(file => {
+    photos.value.push({
+      ...file,
+      selected: false
+    })
   })
 }
 
@@ -73,12 +76,12 @@ function deleteSelected() {
   })
 }
 
-// Show upload component
+// Show upload dialog by triggering file input click
 function showUpload() {
-  // Simulate click on the hidden upload component's input
-  const uploadEl = uploadRef.value
-  if (uploadEl) {
-    const inputEl = uploadEl.querySelector('input[type="file"]') as HTMLInputElement
+  // Find the upload component and simulate a click on its file input
+  if (uploadRef.value) {
+    const uploadEl = uploadRef.value.$el
+    const inputEl = uploadEl.querySelector('input[type="file"]')
     if (inputEl) {
       inputEl.click()
     }
@@ -126,7 +129,7 @@ function showUpload() {
         </div>
         
         <!-- Show upload component when no photos -->
-        <PhotoUpload v-if="!hasPhotos" @upload-image="handleImageUpload" class="full-height" />
+        <PhotoUpload v-if="!hasPhotos" @upload-images="handleImageUpload" class="full-height" />
         
         <!-- Photo grid -->
         <div v-else class="photo-grid">
@@ -142,7 +145,7 @@ function showUpload() {
         </div>
         
         <!-- Hidden upload component for later uploads -->
-        <PhotoUpload ref="uploadRef" @upload-image="handleImageUpload" class="upload-hidden" />
+        <PhotoUpload ref="uploadRef" @upload-images="handleImageUpload" class="upload-hidden" />
       </section>
 
       <!-- Right EXIF Editor Area -->
@@ -279,8 +282,9 @@ function showUpload() {
 .photo-grid {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
   padding: 0 0 $spacing-base 0;
-  @include grid(3, $spacing-base);
+  @include grid(3, $spacing-sm); /* Reduced gap between grid items */
   
   /* Desktop first approach - starting with larger grid */
   grid-template-columns: repeat(5, 1fr);

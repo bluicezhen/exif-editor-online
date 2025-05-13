@@ -7,14 +7,14 @@ const { t } = useI18n()
 
 // Define events
 const emit = defineEmits<{
-  (e: 'upload-image', file: { url: string, name: string, id: string }): void
+  (e: 'upload-images', files: Array<{ url: string, name: string, id: string }>): void
 }>()
 
 // Maximum image file size in MB
 const MAX_FILE_SIZE = 10
 
-// Handle file change event when user selects a file
-function handleChange(file: any) {
+// Handle file change event when user selects files
+function handleChange(file: any, fileList: any[]) {
   if (!file || !file.raw) return
   
   // Validate file is an image
@@ -30,12 +30,19 @@ function handleChange(file: any) {
     return
   }
   
-  // Send uploaded image info to parent component (keeping original image)
-  emit('upload-image', {
-    url: URL.createObjectURL(file.raw),
-    name: file.raw.name,
-    id: Date.now().toString(),
-  })
+  // Process all valid files in the fileList
+  const validFiles = fileList
+    .filter(f => f.raw.type.startsWith('image/') && f.raw.size <= MAX_FILE_SIZE * 1024 * 1024)
+    .map(f => ({
+      url: URL.createObjectURL(f.raw),
+      name: f.raw.name,
+      id: Date.now() + '-' + f.raw.name,
+    }));
+  
+  // Send uploaded images info to parent component
+  if (validFiles.length > 0) {
+    emit('upload-images', validFiles)
+  }
 }
 </script>
 
@@ -48,6 +55,7 @@ function handleChange(file: any) {
       :auto-upload="false"
       :show-file-list="false"
       :on-change="handleChange"
+      multiple
     >
       <el-icon class="upload-icon"><UploadFilled /></el-icon>
       <div class="upload-text">{{ t('upload.placeholder') }}</div>
@@ -97,7 +105,7 @@ function handleChange(file: any) {
   border: 2px dashed var(--border-color);
   
   &:hover {
-    border-color: var(--color-primary);
+    border-color: #909399;
   }
 }
 </style> 

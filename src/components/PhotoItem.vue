@@ -77,6 +77,12 @@ const isSelected = computed({
   top: 8px;
   left: 8px;
   z-index: 10;
+  
+  // Override Element Plus checkbox color to match app theme
+  :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+    background-color: var(--text-secondary);
+    border-color: var(--text-secondary);
+  }
 }
 
 .photo-image {
@@ -86,7 +92,7 @@ const isSelected = computed({
 }
 
 .photo-selected {
-  outline: 2px solid #409eff;
+  outline: 2px solid var(--text-secondary);
   transform: scale(1.02);
   z-index: 1;
 }
