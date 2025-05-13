@@ -287,13 +287,32 @@ function showUpload() {
   @include grid(3, $spacing-sm); /* Reduced gap between grid items */
   
   /* Desktop first approach - starting with larger grid */
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr); /* Increased from 5 to 6 columns */
+  
+  /* Show scrollbar for better UX */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--text-secondary);
+    border-radius: 4px;
+  }
   
   @media (max-width: $breakpoint-lg) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr); /* Increased from 4 to 5 columns */
   }
   
   @media (max-width: $breakpoint-md) {
+    grid-template-columns: repeat(4, 1fr); /* Increased from 3 to 4 columns */
+  }
+  
+  /* For smaller screens use 3 columns */
+  @media (max-width: 480px) {
     grid-template-columns: repeat(3, 1fr);
   }
 }

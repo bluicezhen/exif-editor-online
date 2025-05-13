@@ -13,6 +13,12 @@ const emit = defineEmits<{
 // Maximum image file size in MB
 const MAX_FILE_SIZE = 10
 
+// Generate a truly unique id for each file
+function generateUniqueId(fileName: string): string {
+  // Combine current timestamp, random number and filename to ensure uniqueness
+  return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}-${fileName}`;
+}
+
 // Handle file change event when user selects files
 function handleChange(file: any, fileList: any[]) {
   if (!file || !file.raw) return
@@ -36,7 +42,7 @@ function handleChange(file: any, fileList: any[]) {
     .map(f => ({
       url: URL.createObjectURL(f.raw),
       name: f.raw.name,
-      id: Date.now() + '-' + f.raw.name,
+      id: generateUniqueId(f.raw.name),
     }));
   
   // Send uploaded images info to parent component
