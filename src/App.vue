@@ -217,6 +217,7 @@ function showUpload() {
   height: 100%;
   position: relative;
   padding-right: $spacing-base;
+  padding-left: $spacing-base;
   overflow: hidden;
   @include flex(column);
 }
@@ -229,6 +230,7 @@ function showUpload() {
   background-color: var(--bg-primary);
   border-radius: $border-radius;
   overflow: hidden;
+  margin-right: $spacing-base;
 
   .dark-mode & {
     background-color: var(--bg-primary);
