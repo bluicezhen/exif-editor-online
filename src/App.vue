@@ -88,28 +88,27 @@ function showUpload() {
 
 <template>
   <div class="app-container">
-    <!-- Top Banner -->
+    <!-- Header -->
     <header class="app-header">
-      <div class="header-content">
-        <h1 class="header-title">{{ t('title') }}</h1>
-        <div class="header-actions">
-          <LanguageSwitcher />
-          <ThemeSwitcher />
-          <a 
-            href="https://github.com/bluicezhen/exif-editor-online" 
-            target="_blank" 
-            class="github-link"
-          >
-            GitHub
-          </a>
-        </div>
+      <h1 class="header-title">{{ t('title') }}</h1>
+      <div class="header-actions">
+        <LanguageSwitcher />
+        <ThemeSwitcher />
+        <a 
+          href="https://github.com/bluicezhen/exif-editor-online" 
+          target="_blank" 
+          class="github-link"
+          title="GitHub"
+        >
+          GitHub
+        </a>
       </div>
     </header>
 
     <!-- Main Content -->
     <main class="app-content">
       <!-- Left Photo Display Area -->
-      <div class="photo-area">
+      <section class="photo-area">
         <!-- Photo toolbar -->
         <div v-if="hasPhotos" class="photo-toolbar">
           <div class="toolbar-actions">
@@ -127,9 +126,7 @@ function showUpload() {
         </div>
         
         <!-- Show upload component when no photos -->
-        <div v-if="!hasPhotos" class="full-height">
-          <PhotoUpload @upload-image="handleImageUpload" />
-        </div>
+        <PhotoUpload v-if="!hasPhotos" @upload-image="handleImageUpload" class="full-height" />
         
         <!-- Photo grid -->
         <div v-else class="photo-grid">
@@ -145,15 +142,13 @@ function showUpload() {
         </div>
         
         <!-- Hidden upload component for later uploads -->
-        <div class="upload-hidden">
-          <PhotoUpload ref="uploadRef" @upload-image="handleImageUpload" />
-        </div>
-      </div>
+        <PhotoUpload ref="uploadRef" @upload-image="handleImageUpload" class="upload-hidden" />
+      </section>
 
       <!-- Right EXIF Editor Area -->
-      <div class="exif-area">
+      <section class="exif-area">
         <ExifEditor />
-      </div>
+      </section>
     </main>
   </div>
 </template>
@@ -179,24 +174,25 @@ function showUpload() {
   background-color: var(--header-bg);
   color: var(--header-text);
   flex: 0 0 auto; /* Fixed height, won't grow or shrink */
-
-  .header-content {
-    padding: 0 $spacing-base;
-    height: $header-height;
-    @include flex(row, space-between, center);
-  }
+  padding: 0 $spacing-base;
+  height: $header-height;
+  width: 100%;
+  @include flex(row, space-between, center);
 
   .header-title {
     font-size: 1.25rem;
     font-weight: 500;
+    margin-left: 1.25rem;
   }
 
   .header-actions {
     @include flex(row, center, center, $spacing-lg);
+    margin-right: 1.25rem;
   }
 
   .github-link {
     color: $color-text-light;
+    font-size: 1rem;
     @include transition(color);
 
     &:hover {
@@ -212,6 +208,7 @@ function showUpload() {
   height: calc(100vh - #{$header-height});
   padding: $spacing-base;
   overflow: hidden;
+  width: 100%;
 }
 
 /* Left side - photo area (75% width) */
@@ -232,6 +229,11 @@ function showUpload() {
   background-color: var(--bg-primary);
   border-radius: $border-radius;
   overflow: hidden;
+
+  .dark-mode & {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
 }
 
 /* Photo toolbar */
@@ -240,6 +242,11 @@ function showUpload() {
   margin-bottom: $spacing-base;
   @include card($spacing-md);
   flex: 0 0 auto; /* Fixed height */
+
+  .dark-mode & {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
 
   .toolbar-actions {
     @include flex(row, center, center, $spacing-md);
@@ -256,6 +263,13 @@ function showUpload() {
   height: 100%;
   flex: 1;
   overflow: hidden;
+  background-color: var(--bg-primary);
+  border-radius: $border-radius;
+
+  .dark-mode & {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
 }
 
 /* Photo grid with scrolling */
@@ -264,13 +278,16 @@ function showUpload() {
   overflow-y: auto;
   padding: 0 0 $spacing-base 0;
   @include grid(3, $spacing-base);
-
-  @include respond-to(md) {
+  
+  /* Desktop first approach - starting with larger grid */
+  grid-template-columns: repeat(5, 1fr);
+  
+  @media (max-width: $breakpoint-lg) {
     grid-template-columns: repeat(4, 1fr);
   }
-
-  @include respond-to(lg) {
-    grid-template-columns: repeat(5, 1fr);
+  
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

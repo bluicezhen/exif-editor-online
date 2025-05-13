@@ -12,8 +12,8 @@ html, body {
 }
 
 #app {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
 }
 
 /* Element Plus theme overrides */
@@ -39,4 +39,36 @@ html, body {
 
 .el-button--info {
   background-color: var(--el-color-info) !important;
+}
+
+/* Dark mode overrides for Element Plus components */
+.dark-mode {
+  .el-card,
+  .el-dialog,
+  .el-dropdown-menu,
+  .el-message-box,
+  .el-popover,
+  .el-tooltip__popper {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+  }
+  
+  .el-dropdown-menu__item {
+    color: var(--text-primary);
+    
+    &:hover, &:focus {
+      background-color: var(--bg-secondary);
+    }
+  }
+  
+  .el-input__wrapper,
+  .el-textarea__wrapper {
+    background-color: var(--bg-primary);
+    
+    .el-input__inner,
+    .el-textarea__inner {
+      color: var(--text-primary);
+    }
+  }
 } 
