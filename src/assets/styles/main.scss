@@ -1,0 +1,42 @@
+@use 'abstracts' as *;
+
+/* Global reset styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+}
+
+/* Element Plus theme overrides */
+.el-button {
+  background-color: var(--el-button-bg-color, var(--el-color-white)) !important;
+}
+
+.el-button--primary {
+  background-color: var(--el-color-primary) !important;
+}
+
+.el-button--success {
+  background-color: var(--el-color-success) !important;
+}
+
+.el-button--warning {
+  background-color: var(--el-color-warning) !important;
+}
+
+.el-button--danger {
+  background-color: var(--el-color-danger) !important;
+}
+
+.el-button--info {
+  background-color: var(--el-color-info) !important;
+} 

@@ -3,9 +3,11 @@ import { useI18n } from 'vue-i18n'
 import { watchEffect, ref, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import LanguageSwitcher from './components/LanguageSwitcher.vue'
+import ThemeSwitcher from './components/ThemeSwitcher.vue'
 import PhotoUpload from './components/PhotoUpload.vue'
 import PhotoItem from './components/PhotoItem.vue'
 import ExifEditor from './components/ExifEditor.vue'
+import './assets/styles/main.scss'
 
 const { t } = useI18n()
 
@@ -92,6 +94,7 @@ function showUpload() {
         <h1 class="header-title">{{ t('title') }}</h1>
         <div class="header-actions">
           <LanguageSwitcher />
+          <ThemeSwitcher />
           <a 
             href="https://github.com/bluicezhen/exif-editor-online" 
             target="_blank" 
@@ -155,99 +158,59 @@ function showUpload() {
   </div>
 </template>
 
-<style>
-/* Global reset styles to ensure consistent layout */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-}
-
-#app {
-  height: 100%;
-  width: 100%;
-}
-
-/* Element Plus button overrides - must be in non-scoped style block */
-.el-button {
-  background-color: var(--el-button-bg-color, var(--el-color-white)) !important;
-}
-
-.el-button--primary {
-  background-color: var(--el-color-primary) !important;
-}
-
-.el-button--success {
-  background-color: var(--el-color-success) !important;
-}
-
-.el-button--warning {
-  background-color: var(--el-color-warning) !important;
-}
-
-.el-button--danger {
-  background-color: var(--el-color-danger) !important;
-}
-
-.el-button--info {
-  background-color: var(--el-color-info) !important;
-}
+<style lang="scss">
+@use './assets/styles/main';
 </style>
 
-<style scoped>
+<style lang="scss" scoped>
+@use './assets/styles/abstracts' as *;
+
 /* Main container - fills viewport */
 .app-container {
-  display: flex;
-  flex-direction: column;
+  @include flex(column);
   height: 100vh;
   width: 100%;
-  background-color: #f5f5f5;
+  background-color: var(--bg-secondary);
   overflow: hidden;
 }
 
 /* Header styles */
 .app-header {
-  background-color: #1f2937; /* Dark background for header */
-  color: white;
+  background-color: var(--header-bg);
+  color: var(--header-text);
   flex: 0 0 auto; /* Fixed height, won't grow or shrink */
-}
 
-.header-content {
-  padding: 0 1rem;
-  height: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+  .header-content {
+    padding: 0 $spacing-base;
+    height: $header-height;
+    @include flex(row, space-between, center);
+  }
 
-.header-title {
-  font-size: 1.25rem;
-  font-weight: 500;
-}
+  .header-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
 
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
+  .header-actions {
+    @include flex(row, center, center, $spacing-lg);
+  }
 
-.github-link {
-  color: #d1d5db;
-  transition: color 0.2s;
-}
+  .github-link {
+    color: $color-text-light;
+    @include transition(color);
 
-.github-link:hover {
-  color: white;
+    &:hover {
+      color: var(--header-text);
+    }
+  }
 }
 
 /* Main content area - takes remaining height */
 .app-content {
   flex: 1;
-  display: flex;
-  height: calc(100vh - 4rem); /* Viewport height minus header */
-  padding: 1rem;
+  @include flex(row);
+  height: calc(100vh - #{$header-height});
+  padding: $spacing-base;
   overflow: hidden;
 }
 
@@ -256,10 +219,9 @@ html, body {
   width: 75%;
   height: 100%;
   position: relative;
-  padding-right: 1rem;
+  padding-right: $spacing-base;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  @include flex(column);
 }
 
 /* Right side - EXIF editor area (25% width) */
@@ -267,33 +229,26 @@ html, body {
   width: 25%;
   height: 100%;
   position: relative;
-  background-color: white;
-  border-radius: 4px;
+  background-color: var(--bg-primary);
+  border-radius: $border-radius;
   overflow: hidden;
 }
 
 /* Photo toolbar */
 .photo-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  background-color: white;
-  padding: 0.75rem;
-  border-radius: 0.25rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  @include flex(row, space-between, center);
+  margin-bottom: $spacing-base;
+  @include card($spacing-md);
   flex: 0 0 auto; /* Fixed height */
-}
 
-.toolbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
+  .toolbar-actions {
+    @include flex(row, center, center, $spacing-md);
+  }
 
-.photo-count {
-  color: #6b7280;
-  font-size: 0.875rem;
+  .photo-count {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
 }
 
 /* Full height container for upload placeholder */
@@ -307,21 +262,14 @@ html, body {
 .photo-grid {
   flex: 1;
   overflow-y: auto;
-  padding: 0 0 1rem 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
+  padding: 0 0 $spacing-base 0;
+  @include grid(3, $spacing-base);
 
-/* Responsive grid layouts */
-@media (min-width: 768px) {
-  .photo-grid {
+  @include respond-to(md) {
     grid-template-columns: repeat(4, 1fr);
   }
-}
 
-@media (min-width: 1024px) {
-  .photo-grid {
+  @include respond-to(lg) {
     grid-template-columns: repeat(5, 1fr);
   }
 }
@@ -329,8 +277,7 @@ html, body {
 /* Hidden upload component */
 .upload-hidden {
   position: absolute;
-  width: 0;
-  height: 0;
+  @include fixed-size(0);
   overflow: hidden;
   opacity: 0;
 }
