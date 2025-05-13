@@ -112,11 +112,11 @@ function showUpload() {
         <!-- Photo toolbar -->
         <div v-if="hasPhotos" class="photo-toolbar">
           <div class="toolbar-actions">
-            <el-button type="primary" @click="showUpload">{{ t('photos.upload') }}</el-button>
-            <el-button type="info" @click="toggleSelectAll">
+            <el-button type="info" size="small" @click="showUpload">{{ t('photos.upload') }}</el-button>
+            <el-button type="info" size="small" @click="toggleSelectAll">
               {{ allSelected ? t('photos.deselectAll') : t('photos.selectAll') }}
             </el-button>
-            <el-button type="danger" @click="deleteSelected" :disabled="selectedCount === 0">
+            <el-button type="info" size="small" @click="deleteSelected" :disabled="selectedCount === 0">
               {{ t('photos.delete') }} <span v-if="selectedCount > 0">({{ selectedCount }})</span>
             </el-button>
           </div>
@@ -244,6 +244,7 @@ function showUpload() {
   margin-bottom: $spacing-base;
   @include card($spacing-md);
   flex: 0 0 auto; /* Fixed height */
+  width: 100%;
 
   .dark-mode & {
     background-color: var(--bg-primary);
