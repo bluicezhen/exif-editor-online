@@ -8,6 +8,7 @@ import PhotoUpload from './components/PhotoUpload.vue'
 import PhotoItem from './components/PhotoItem.vue'
 import ExifEditor from './components/ExifEditor.vue'
 import './assets/styles/main.scss'
+import { parseExifFromPhotos, type ParseProgressInfo } from './utils/exifParser'
 
 const { t } = useI18n()
 
@@ -30,6 +31,18 @@ const selectedCount = computed(() => photos.value.filter(photo => photo.selected
 const allSelected = computed(() => photos.value.length > 0 && selectedCount.value === photos.value.length)
 const uploadRef = ref<InstanceType<typeof PhotoUpload> | null>(null)
 
+// EXIF parsing progress state
+const parseProgress = ref<ParseProgressInfo>({
+  total: 0,
+  completed: 0,
+  inProgress: 0
+})
+const isParsingExif = computed(() => parseProgress.value.completed < parseProgress.value.total)
+const parseProgressPercent = computed(() => {
+  const { total, completed } = parseProgress.value
+  return total > 0 ? Math.round((completed / total) * 100) : 0
+})
+
 // Handle image upload
 function handleImageUpload(files: Array<{ url: string, name: string, id: string }>) {
   // Add each uploaded file to photos array
@@ -41,6 +54,22 @@ function handleImageUpload(files: Array<{ url: string, name: string, id: string 
       })
     }
   })
+  
+  // Parse EXIF data for new photos
+  parseExifForNewPhotos(files)
+}
+
+// Parse EXIF data for new photos
+async function parseExifForNewPhotos(newPhotos: Array<{ url: string, name: string, id: string }>) {
+  try {
+    // Start parsing EXIF data with progress updates
+    await parseExifFromPhotos(newPhotos, (progress) => {
+      parseProgress.value = progress
+    })
+  } catch (error) {
+    console.error('Error parsing EXIF data:', error)
+    ElMessage.error(t('common.error'))
+  }
 }
 
 // Toggle selection of a single photo
@@ -125,7 +154,19 @@ function showUpload() {
               {{ t('photos.delete') }} <span v-if="selectedCount > 0">({{ selectedCount }})</span>
             </el-button>
           </div>
-          <div class="photo-count">
+          
+          <!-- EXIF parsing progress bar -->
+          <div v-if="isParsingExif" class="parse-progress">
+            <span class="progress-text">{{ t('photos.parsingExif') }}: {{ parseProgressPercent }}%</span>
+            <el-progress
+              :percentage="parseProgressPercent"
+              :stroke-width="10"
+              :show-text="false"
+              :status="parseProgressPercent === 100 ? 'success' : ''"
+            ></el-progress>
+          </div>
+          
+          <div v-else class="photo-count">
             {{ t('photos.count', { count: photos.length }) }}
           </div>
         </div>
@@ -263,6 +304,22 @@ function showUpload() {
   .photo-count {
     color: var(--text-secondary);
     font-size: 0.875rem;
+  }
+  
+  /* EXIF parsing progress styles */
+  .parse-progress {
+    @include flex(column, center, flex-start);
+    min-width: 150px;
+    
+    .progress-text {
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      margin-bottom: 3px;
+    }
+    
+    .el-progress {
+      width: 100%;
+    }
   }
 }
 
