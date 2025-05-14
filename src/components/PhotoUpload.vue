@@ -11,7 +11,7 @@ const emit = defineEmits<{
 }>()
 
 // Maximum image file size in MB
-const MAX_FILE_SIZE = 10
+const MAX_FILE_SIZE = 100
 
 // Generate a truly unique id for each file
 function generateUniqueId(fileName: string): string {
