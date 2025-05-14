@@ -34,10 +34,12 @@ const uploadRef = ref<InstanceType<typeof PhotoUpload> | null>(null)
 function handleImageUpload(files: Array<{ url: string, name: string, id: string }>) {
   // Add each uploaded file to photos array
   files.forEach(file => {
-    photos.value.push({
-      ...file,
-      selected: false
-    })
+    if (!photos.value.some(photo => photo.name === file.name)) {
+      photos.value.push({
+        ...file,
+        selected: false
+      })
+    }
   })
 }
 
