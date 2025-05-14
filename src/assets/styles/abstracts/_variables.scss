@@ -6,6 +6,11 @@ $color-white: #ffffff;
 $color-text: #333333;
 $color-text-light: #d1d5db;
 
+// Convert color to RGB values for rgba usage
+@function hexToRGB($hex) {
+  @return red($hex), green($hex), blue($hex);
+}
+
 // Spacing
 $spacing-xs: 0.25rem;
 $spacing-sm: 0.5rem;
@@ -35,6 +40,7 @@ $z-index-modal: 50;
   --bg-secondary: #{$color-light};
   --text-primary: #{$color-text};
   --text-secondary: #{$color-secondary};
+  --text-secondary-rgb: #{hexToRGB($color-secondary)};
   --header-bg: #{$color-primary};
   --header-text: #{$color-white};
 }
@@ -45,6 +51,7 @@ $z-index-modal: 50;
   --bg-secondary: #1e1e1e;
   --text-primary: #{$color-white};
   --text-secondary: #a0aec0;
+  --text-secondary-rgb: 160, 174, 192;
   --header-bg: #000000;
   --header-text: #{$color-white};
 } 

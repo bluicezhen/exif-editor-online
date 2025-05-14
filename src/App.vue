@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { watchEffect, ref, computed } from 'vue'
+import { watchEffect, ref, computed, provide } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import LanguageSwitcher from './components/LanguageSwitcher.vue'
 import ThemeSwitcher from './components/ThemeSwitcher.vue'
@@ -8,7 +8,7 @@ import PhotoUpload from './components/PhotoUpload.vue'
 import PhotoItem from './components/PhotoItem.vue'
 import ExifEditor from './components/ExifEditor.vue'
 import './assets/styles/main.scss'
-import { parseExifFromPhotos, type ParseProgressInfo } from './utils/exifParser'
+import { parseExifFromPhotos, type ParseProgressInfo, type ExifParseResult } from './utils/exifParser'
 
 const { t } = useI18n()
 
@@ -31,6 +31,13 @@ const selectedCount = computed(() => photos.value.filter(photo => photo.selected
 const allSelected = computed(() => photos.value.length > 0 && selectedCount.value === photos.value.length)
 const uploadRef = ref<InstanceType<typeof PhotoUpload> | null>(null)
 
+// EXIF data store
+const exifStore = ref<Record<string, Record<string, any>>>({})
+
+// Provide photos and exifStore to child components
+provide('photos', photos)
+provide('exifStore', exifStore)
+
 // EXIF parsing progress state
 const parseProgress = ref<ParseProgressInfo>({
   total: 0,
@@ -45,12 +52,12 @@ const parseProgressPercent = computed(() => {
 
 // Handle image upload
 function handleImageUpload(files: Array<{ url: string, name: string, id: string }>) {
-  // Add each uploaded file to photos array
+  // Add each uploaded file to photos array with default selection
   files.forEach(file => {
     if (!photos.value.some(photo => photo.name === file.name)) {
       photos.value.push({
         ...file,
-        selected: false
+        selected: true  // New photos are selected by default
       })
     }
   })
@@ -63,8 +70,15 @@ function handleImageUpload(files: Array<{ url: string, name: string, id: string 
 async function parseExifForNewPhotos(newPhotos: Array<{ url: string, name: string, id: string }>) {
   try {
     // Start parsing EXIF data with progress updates
-    await parseExifFromPhotos(newPhotos, (progress) => {
+    const results: ExifParseResult[] = await parseExifFromPhotos(newPhotos, (progress) => {
       parseProgress.value = progress
+    })
+    
+    // Store EXIF data in exifStore
+    results.forEach(result => {
+      if (result.exifData) {
+        exifStore.value[result.photoId] = result.exifData
+      }
     })
   } catch (error) {
     console.error('Error parsing EXIF data:', error)
@@ -100,7 +114,21 @@ function deleteSelected() {
     t('photos.deleteConfirmTitle'),
     { confirmButtonText: t('common.confirm'), cancelButtonText: t('common.cancel'), type: 'warning' }
   ).then(() => {
+    // Get IDs of photos to be deleted
+    const deletedIds = photos.value
+      .filter(photo => photo.selected)
+      .map(photo => photo.id)
+    
+    // Remove photos from the photos array
     photos.value = photos.value.filter(photo => !photo.selected)
+    
+    // Also remove EXIF data for deleted photos
+    deletedIds.forEach(id => {
+      if (exifStore.value[id]) {
+        delete exifStore.value[id]
+      }
+    })
+    
     ElMessage.success(t('photos.deleteSuccess'))
   }).catch(() => {
     // User canceled operation
