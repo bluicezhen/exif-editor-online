@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, ref, inject, watch, onUnmounted } from 'vue'
+import { computed, ref, inject, watch, onUnmounted, onBeforeMount } from 'vue'
 import { ElMessage } from 'element-plus'
 import AMapLoader from '@amap/amap-jsapi-loader'
 import mapConfig from '../utils/mapConfig'
@@ -313,6 +313,9 @@ function initMap() {
         viewMode: '2D',
         zoom: 13,
         center: getCenterCoordinates(),
+        canvas: {
+          willReadFrequently: true
+        }
       })
       
       // Add map controls
@@ -544,6 +547,39 @@ onUnmounted(() => {
     map = null;
     markers = [];
   }
+});
+
+// Add Canvas performance optimization configuration before component mounting
+onBeforeMount(() => {
+  // Add global styles to handle touch behavior
+  const style = document.createElement('style');
+  style.textContent = `
+    canvas.amap-layer {
+      touch-action: none;
+      -ms-touch-action: none;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Add script to patch Canvas creation
+  const script = document.createElement('script');
+  script.textContent = `
+    (function() {
+      // Save original Canvas creation methods
+      const originalHTMLCanvasElementPrototype = window.HTMLCanvasElement.prototype;
+      const originalGetContext = originalHTMLCanvasElementPrototype.getContext;
+      
+      // Replace with method supporting willReadFrequently attribute
+      originalHTMLCanvasElementPrototype.getContext = function(type, attributes) {
+        attributes = attributes || {};
+        if (type === '2d') {
+          attributes.willReadFrequently = true;
+        }
+        return originalGetContext.call(this, type, attributes);
+      };
+    })();
+  `;
+  document.head.appendChild(script);
 });
 
 // Watch for changes in selected photos and update EXIF display
