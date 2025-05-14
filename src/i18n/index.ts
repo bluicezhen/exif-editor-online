@@ -28,6 +28,14 @@ const zh = {
       gpsLatitude: '纬度',
       gpsLongitude: '经度',
       gpsAltitude: '海拔',
+      GPSLatitudeRef: '纬度参考',
+      GPSLongitudeRef: '经度参考',
+      GPSAltitudeRef: '海拔参考',
+      GPSTimeStamp: 'GPS时间戳',
+      GPSProcessingMethod: 'GPS处理方法',
+      GPSDateStamp: 'GPS日期戳',
+      latitude: '纬度',
+      longitude: '经度',
       
       // Basic Fields
       make: '制造商',
@@ -36,6 +44,9 @@ const zh = {
       modifyDate: '修改日期',
       createDate: '创建日期',
       dateTimeOriginal: '拍摄日期',
+      XResolution: 'X分辨率',
+      YResolution: 'Y分辨率',
+      ResolutionUnit: '分辨率单位',
       
       // Camera Fields
       fNumber: '光圈值',
@@ -47,7 +58,22 @@ const zh = {
       whiteBalance: '白平衡',
       exposureProgram: '曝光程序',
       exposureCompensation: '曝光补偿',
-      meteringMode: '测光模式'
+      meteringMode: '测光模式',
+      ExifVersion: 'Exif版本',
+      OffsetTime: '时差',
+      ShutterSpeedValue: '快门速度',
+      ApertureValue: '光圈值',
+      BrightnessValue: '亮度值',
+      MaxApertureValue: '最大光圈值',
+      LightSource: '光源',
+      SubSecTimeOriginal: '原始亚秒时间',
+      SubSecTimeDigitized: '数字化亚秒时间',
+      ColorSpace: '色彩空间',
+      SensingMethod: '感应方式',
+      SceneType: '场景类型',
+      ExposureMode: '曝光模式',
+      FocalLengthIn35mmFormat: '35mm等效焦距',
+      SceneCaptureType: '场景拍摄类型'
     }
   },
   lang: {
@@ -101,6 +127,14 @@ const en = {
       gpsLatitude: 'Latitude',
       gpsLongitude: 'Longitude',
       gpsAltitude: 'Altitude',
+      GPSLatitudeRef: 'Latitude Reference',
+      GPSLongitudeRef: 'Longitude Reference',
+      GPSAltitudeRef: 'Altitude Reference',
+      GPSTimeStamp: 'GPS Timestamp',
+      GPSProcessingMethod: 'GPS Processing Method',
+      GPSDateStamp: 'GPS Date Stamp',
+      latitude: 'Latitude',
+      longitude: 'Longitude',
       
       // Basic Fields
       make: 'Manufacturer',
@@ -109,6 +143,9 @@ const en = {
       modifyDate: 'Modified Date',
       createDate: 'Created Date',
       dateTimeOriginal: 'Original Date',
+      XResolution: 'X Resolution',
+      YResolution: 'Y Resolution',
+      ResolutionUnit: 'Resolution Unit',
       
       // Camera Fields
       fNumber: 'Aperture',
@@ -120,7 +157,22 @@ const en = {
       whiteBalance: 'White Balance',
       exposureProgram: 'Exposure Program',
       exposureCompensation: 'Exposure Compensation',
-      meteringMode: 'Metering Mode'
+      meteringMode: 'Metering Mode',
+      ExifVersion: 'Exif Version',
+      OffsetTime: 'Offset Time',
+      ShutterSpeedValue: 'Shutter Speed Value',
+      ApertureValue: 'Aperture Value',
+      BrightnessValue: 'Brightness Value',
+      MaxApertureValue: 'Max Aperture Value',
+      LightSource: 'Light Source',
+      SubSecTimeOriginal: 'Original Sub-second Time',
+      SubSecTimeDigitized: 'Digitized Sub-second Time',
+      ColorSpace: 'Color Space',
+      SensingMethod: 'Sensing Method',
+      SceneType: 'Scene Type',
+      ExposureMode: 'Exposure Mode',
+      FocalLengthIn35mmFormat: 'Focal Length In 35mm Format',
+      SceneCaptureType: 'Scene Capture Type'
     }
   },
   lang: {

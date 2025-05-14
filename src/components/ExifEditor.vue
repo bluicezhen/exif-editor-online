@@ -106,6 +106,14 @@ const fieldCategories: Record<string, string> = {
   GPSLatitude: 'editor.sections.gps',
   GPSLongitude: 'editor.sections.gps',
   GPSAltitude: 'editor.sections.gps',
+  GPSLatitudeRef: 'editor.sections.gps',
+  GPSLongitudeRef: 'editor.sections.gps',
+  GPSAltitudeRef: 'editor.sections.gps',
+  GPSTimeStamp: 'editor.sections.gps',
+  GPSProcessingMethod: 'editor.sections.gps',
+  GPSDateStamp: 'editor.sections.gps',
+  latitude: 'editor.sections.gps',
+  longitude: 'editor.sections.gps',
   
   // Basic Fields
   Make: 'editor.sections.basic',
@@ -114,6 +122,9 @@ const fieldCategories: Record<string, string> = {
   ModifyDate: 'editor.sections.basic',
   CreateDate: 'editor.sections.basic',
   DateTimeOriginal: 'editor.sections.basic',
+  XResolution: 'editor.sections.basic',
+  YResolution: 'editor.sections.basic',
+  ResolutionUnit: 'editor.sections.basic',
   
   // Camera Fields
   FNumber: 'editor.sections.camera',
@@ -126,36 +137,77 @@ const fieldCategories: Record<string, string> = {
   ExposureProgram: 'editor.sections.camera',
   ExposureCompensation: 'editor.sections.camera',
   MeteringMode: 'editor.sections.camera',
+  ExifVersion: 'editor.sections.camera',
+  OffsetTime: 'editor.sections.camera',
+  ShutterSpeedValue: 'editor.sections.camera',
+  ApertureValue: 'editor.sections.camera',
+  BrightnessValue: 'editor.sections.camera',
+  MaxApertureValue: 'editor.sections.camera',
+  LightSource: 'editor.sections.camera',
+  SubSecTimeOriginal: 'editor.sections.camera',
+  SubSecTimeDigitized: 'editor.sections.camera',
+  ColorSpace: 'editor.sections.camera',
+  SensingMethod: 'editor.sections.camera',
+  SceneType: 'editor.sections.camera',
+  ExposureMode: 'editor.sections.camera',
+  FocalLengthIn35mmFormat: 'editor.sections.camera',
+  SceneCaptureType: 'editor.sections.camera',
   
   // All other fields will go to "Other" section
 }
 
-// Field labels translations
+// Field labels translations - 简化为直接映射
 const fieldLabels: Record<string, string> = {
   // GPS Fields
-  GPSLatitude: 'editor.fields.gpsLatitude',
-  GPSLongitude: 'editor.fields.gpsLongitude',
-  GPSAltitude: 'editor.fields.gpsAltitude',
+  GPSLatitude: 'gpsLatitude',
+  GPSLongitude: 'gpsLongitude',
+  GPSAltitude: 'gpsAltitude',
+  GPSLatitudeRef: 'GPSLatitudeRef',
+  GPSLongitudeRef: 'GPSLongitudeRef',
+  GPSAltitudeRef: 'GPSAltitudeRef',
+  GPSTimeStamp: 'GPSTimeStamp',
+  GPSProcessingMethod: 'GPSProcessingMethod',
+  GPSDateStamp: 'GPSDateStamp',
+  latitude: 'latitude',
+  longitude: 'longitude',
   
   // Basic Fields
-  Make: 'editor.fields.make',
-  Model: 'editor.fields.model',
-  Software: 'editor.fields.software',
-  ModifyDate: 'editor.fields.modifyDate',
-  CreateDate: 'editor.fields.createDate',
-  DateTimeOriginal: 'editor.fields.dateTimeOriginal',
+  Make: 'make',
+  Model: 'model',
+  Software: 'software',
+  ModifyDate: 'modifyDate',
+  CreateDate: 'createDate',
+  DateTimeOriginal: 'dateTimeOriginal',
+  XResolution: 'XResolution',
+  YResolution: 'YResolution',
+  ResolutionUnit: 'ResolutionUnit',
   
   // Camera Fields
-  FNumber: 'editor.fields.fNumber',
-  ExposureTime: 'editor.fields.exposureTime',
-  ISO: 'editor.fields.iso',
-  FocalLength: 'editor.fields.focalLength',
-  LensModel: 'editor.fields.lensModel',
-  Flash: 'editor.fields.flash',
-  WhiteBalance: 'editor.fields.whiteBalance',
-  ExposureProgram: 'editor.fields.exposureProgram',
-  ExposureCompensation: 'editor.fields.exposureCompensation',
-  MeteringMode: 'editor.fields.meteringMode'
+  FNumber: 'fNumber',
+  ExposureTime: 'exposureTime',
+  ISO: 'iso',
+  FocalLength: 'focalLength',
+  LensModel: 'lensModel',
+  Flash: 'flash',
+  WhiteBalance: 'whiteBalance',
+  ExposureProgram: 'exposureProgram',
+  ExposureCompensation: 'exposureCompensation',
+  MeteringMode: 'meteringMode',
+  ExifVersion: 'ExifVersion',
+  OffsetTime: 'OffsetTime',
+  ShutterSpeedValue: 'ShutterSpeedValue',
+  ApertureValue: 'ApertureValue',
+  BrightnessValue: 'BrightnessValue',
+  MaxApertureValue: 'MaxApertureValue',
+  LightSource: 'LightSource',
+  SubSecTimeOriginal: 'SubSecTimeOriginal',
+  SubSecTimeDigitized: 'SubSecTimeDigitized',
+  ColorSpace: 'ColorSpace',
+  SensingMethod: 'SensingMethod',
+  SceneType: 'SceneType',
+  ExposureMode: 'ExposureMode',
+  FocalLengthIn35mmFormat: 'FocalLengthIn35mmFormat',
+  SceneCaptureType: 'SceneCaptureType'
 }
 
 // Field types
@@ -164,18 +216,28 @@ const fieldTypes: Record<string, 'text' | 'number' | 'date' | 'gps'> = {
   GPSLatitude: 'gps',
   GPSLongitude: 'gps',
   GPSAltitude: 'number',
+  latitude: 'gps',
+  longitude: 'gps',
   
   // Date Fields
   ModifyDate: 'date',
   CreateDate: 'date',
   DateTimeOriginal: 'date',
+  GPSDateStamp: 'date',
   
   // Number Fields
   FNumber: 'number',
   ExposureTime: 'number',
   ISO: 'number',
   FocalLength: 'number',
-  ExposureCompensation: 'number'
+  ExposureCompensation: 'number',
+  XResolution: 'number',
+  YResolution: 'number',
+  ShutterSpeedValue: 'number',
+  ApertureValue: 'number',
+  BrightnessValue: 'number',
+  MaxApertureValue: 'number',
+  FocalLengthIn35mmFormat: 'number'
 }
 
 // Format field value for display
@@ -327,6 +389,17 @@ function addMarkersToMap(AMap?: any) {
   }
 }
 
+// 辅助函数，将EXIF键转换为正确的翻译键
+function getTranslationKey(exifKey: string): string {
+  // 如果键在fieldLabels中有映射，则使用映射的值
+  if (fieldLabels[exifKey]) {
+    return fieldLabels[exifKey];
+  }
+  
+  // 对于没有映射的情况，原样返回
+  return exifKey;
+}
+
 // Process EXIF data for display
 function processExifData() {
   if (!selectedPhotosExif.value.length) {
@@ -365,10 +438,13 @@ function processExifData() {
     const firstValue = Object.values(photoValues)[0];
     const displayValue = isMultipleValues ? t('editor.multipleValues') : formatFieldValue(key, firstValue);
     
+    // 获取翻译键
+    const translationKey = getTranslationKey(key);
+    
     // Create field object
     allFields[key] = {
       key,
-      label: t(fieldLabels[key] || key),
+      label: t(`editor.fields.${translationKey}`),
       originalValues: photoValues,
       displayValue,
       isMultipleValues,
