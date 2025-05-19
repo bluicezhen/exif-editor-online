@@ -2,6 +2,7 @@
 import { ref, onUnmounted, onBeforeMount, watch } from 'vue'
 import AMapLoader from '@amap/amap-jsapi-loader'
 import mapConfig from '../utils/mapConfig'
+import { transformWGS84ToGCJ02 } from '../utils/coordinateTransform'
 
 // Define props interface
 interface Props {
@@ -99,7 +100,11 @@ function getCenterCoordinates() {
       // TypeScript safety: We already filtered for existence above
       const longitude = item.exifData.longitude!;
       const latitude = item.exifData.latitude!;
-      return [longitude, latitude];
+      
+      // Transform WGS84 to GCJ02 for Chinese mainland coordinates
+      const [gcjLat, gcjLon] = transformWGS84ToGCJ02(latitude, longitude);
+      
+      return [gcjLon, gcjLat];
     });
   
   if (!validCoordinates.length) return [116.397428, 39.90923];
@@ -136,9 +141,12 @@ function addMarkersToMap(AMap?: any) {
     // TypeScript safety: We already filtered for existence above
     const longitude = item.exifData.longitude!;
     const latitude = item.exifData.latitude!;
+    
+    // Transform WGS84 to GCJ02 for Chinese mainland coordinates
+    const [gcjLat, gcjLon] = transformWGS84ToGCJ02(latitude, longitude);
 
     const marker = new AMapInstance.Marker({
-      position: [longitude, latitude],
+      position: [gcjLon, gcjLat],
       title: item.photoId,
     });
     
