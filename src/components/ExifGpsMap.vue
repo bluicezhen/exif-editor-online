@@ -9,6 +9,8 @@ interface Props {
   photosWithGps: Array<{
     photoId: string;
     exifData: {
+      latitude?: number;
+      longitude?: number;
       GPSLatitude?: number[];
       GPSLongitude?: number[];
       [key: string]: any;
@@ -90,13 +92,13 @@ function getCenterCoordinates() {
   
   const validCoordinates = props.photosWithGps
     .filter((item) => 
-      item?.exifData?.GPSLatitude && 
-      item?.exifData?.GPSLongitude
+      item?.exifData?.latitude !== undefined && 
+      item?.exifData?.longitude !== undefined
     )
     .map((item) => {
       // TypeScript safety: We already filtered for existence above
-      const longitude = item.exifData.GPSLongitude![0];
-      const latitude = item.exifData.GPSLatitude![0];
+      const longitude = item.exifData.longitude!;
+      const latitude = item.exifData.latitude!;
       return [longitude, latitude];
     });
   
@@ -124,16 +126,16 @@ function addMarkersToMap(AMap?: any) {
   const AMapInstance = AMap || window.AMap;
   
   const validPhotos = props.photosWithGps.filter((item) => 
-    item?.exifData?.GPSLatitude && 
-    item?.exifData?.GPSLongitude
+    item?.exifData?.latitude !== undefined && 
+    item?.exifData?.longitude !== undefined
   );
   
   if (!validPhotos.length) return;
   
   markers = validPhotos.map((item) => {
     // TypeScript safety: We already filtered for existence above
-    const longitude = item.exifData.GPSLongitude![0];
-    const latitude = item.exifData.GPSLatitude![0];
+    const longitude = item.exifData.longitude!;
+    const latitude = item.exifData.latitude!;
 
     const marker = new AMapInstance.Marker({
       position: [longitude, latitude],

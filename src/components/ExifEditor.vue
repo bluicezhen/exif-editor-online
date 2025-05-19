@@ -41,7 +41,7 @@ const selectedPhotosExif = computed(() => {
 // Check if any selected photos have GPS data
 const hasGpsData = computed(() => {
   return selectedPhotosExif.value.some((item: any) => 
-    item?.exifData?.GPSLatitude && item?.exifData?.GPSLongitude
+    item?.exifData?.latitude && item?.exifData?.longitude
   )
 })
 
@@ -242,6 +242,10 @@ function formatFieldValue(key: string, value: any): string {
       return `${value}s`;
     case 'FocalLength':
       return `${value}mm`;
+    case 'latitude':
+      return `${Math.abs(value).toFixed(6)}° ${value >= 0 ? 'N' : 'S'}`;
+    case 'longitude':
+      return `${Math.abs(value).toFixed(6)}° ${value >= 0 ? 'E' : 'W'}`;
     case 'GPSLatitude':
     case 'GPSLongitude':
       // Format GPS coordinates
@@ -281,7 +285,7 @@ function getTranslationKey(exifKey: string): string {
  */
 const photosWithGpsData = computed(() => {
   return selectedPhotosExif.value.filter((item: any) => 
-    item?.exifData?.GPSLatitude && item?.exifData?.GPSLongitude
+    item?.exifData?.latitude && item?.exifData?.longitude
   );
 });
 
@@ -298,7 +302,12 @@ function processExifData() {
   const allExifKeys = new Set<string>();
   selectedPhotosExif.value.forEach((item: ExifItem) => {
     if (item?.exifData) {
-      Object.keys(item.exifData).forEach(key => allExifKeys.add(key));
+      Object.keys(item.exifData).forEach(key => {
+        // 排除带 GPS 前缀的字段，除了 GPSAltitude，因为它没有对应的 altitude 字段
+        if (!key.startsWith('GPS') || key === 'GPSAltitude') {
+          allExifKeys.add(key);
+        }
+      });
     }
   });
   
