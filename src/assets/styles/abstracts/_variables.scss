@@ -7,8 +7,9 @@ $color-text: #333333;
 $color-text-light: #d1d5db;
 
 // Convert color to RGB values for rgba usage
+@use "sass:color";
 @function hexToRGB($hex) {
-  @return red($hex), green($hex), blue($hex);
+  @return color.channel($hex, "red"), color.channel($hex, "green"), color.channel($hex, "blue");
 }
 
 // Spacing
